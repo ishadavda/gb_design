@@ -1,0 +1,435 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #f1f0ec;
+}
+
+/* ---------------------------------------------------------------------------
+ * Ported verbatim from the approved UI screens (Final_UI_Screens_v6_15thSep).
+ * Values here are the design, not a starting point - changing a shadow offset
+ * or an easing curve changes the product.
+ * ------------------------------------------------------------------------- */
+
+/* 3D Tactile Button styling */
+.btn-3d {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: #4caf50;
+  color: #0f172a;
+  box-shadow:
+    0 3px 0 #33863f,
+    inset 0 1px 1px rgba(255, 255, 255, 0.5),
+    inset 0 -3px 4px rgba(0, 0, 0, 0.15);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease;
+}
+
+.btn-3d:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 #33863f,
+    inset 0 1px 1px rgba(255, 255, 255, 0.5),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.15);
+}
+
+.btn-3d::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: calc(100% - 4px);
+  height: 30%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+  border-radius: 16px 16px 40% 40% / 100% 100% 20% 20%;
+  pointer-events: none;
+}
+
+.btn-3d:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 4px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Lockscreen wallpaper gradient matching the reference image and slate-page theme */
+.lockscreen-bg {
+  background: linear-gradient(180deg, #e6edf5 0%, #dce5ee 42%, #d3dfe9 100%);
+}
+
+/* Notification pop/drop animation */
+@keyframes notifDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.97);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(2px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-notif {
+  animation: notifDrop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Upward swipe bounce cue */
+@keyframes bounceUp {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.bounce-cue {
+  animation: bounceUp 2s ease-in-out infinite;
+}
+
+/* Subtle pulse cue */
+@keyframes subtlePulse {
+  0%,
+  100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+.pulse-cue {
+  animation: subtlePulse 2.8s ease-in-out infinite;
+}
+
+/* Screen transition */
+.screen-transition {
+  transition:
+    transform 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.35s ease;
+}
+
+/* Onboarding success badge spring */
+@keyframes checkmark-spring {
+  0% {
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.25) rotate(6deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-check-spring {
+  animation: checkmark-spring 0.65s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Celebration confetti */
+.confetti-piece {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  animation: confetti-particle 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  pointer-events: none;
+  z-index: 40;
+}
+
+@keyframes confetti-particle {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx, 60px), var(--ty, -80px)) scale(0.4)
+      rotate(var(--tr, 360deg));
+    opacity: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * The main app screens (main_screen.html).
+ *
+ * Everything below is here rather than in a Tailwind class because it is a
+ * keyframe, a pseudo-element or a multi-layer shadow - the three things the
+ * utility layer cannot express.
+ * ------------------------------------------------------------------------- */
+
+/* Marquee chasing lights along the top edge of a deal card */
+.marquee-lights {
+  position: absolute;
+  top: -1px;
+  left: 8px;
+  right: 8px;
+  height: 4px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.marquee-lights span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffd166;
+  animation: chase 1.2s linear infinite;
+}
+
+@keyframes chase {
+  0%,
+  20% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+  21%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+/* The deal tile that flips between the brand mark and the product artwork */
+.deal-logo {
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.14);
+}
+
+.deal-logo-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  animation: logo-flip 6s ease-in-out infinite;
+  backface-visibility: hidden;
+}
+
+/* Half a cycle out of phase, so one face is up while the other is edge-on. */
+.deal-logo-face.product {
+  animation-delay: -3s;
+}
+
+.deal-logo-face svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes logo-flip {
+  0%,
+  42% {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+  50%,
+  92% {
+    opacity: 0;
+    transform: rotateY(90deg);
+  }
+  58% {
+    opacity: 0;
+    transform: rotateY(90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+}
+
+/* Flip-digit countdown reel tiles */
+.digit-tile {
+  width: 13px;
+  height: 18px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Courier New", monospace;
+  font-weight: 800;
+  font-size: 12px;
+  color: #4caf50;
+  box-shadow:
+    inset 0 -4px 3px -2px rgba(15, 23, 42, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Off-screen cards stop animating rather than burning a phone's battery. */
+.anim-paused,
+.anim-paused * {
+  animation-play-state: paused !important;
+}
+
+/* Tactile gold button - the claim CTA */
+.btn-gold-3d {
+  background: linear-gradient(180deg, #ffda85 0%, #ffc53d 100%);
+  border: none;
+  color: #101626;
+  box-shadow:
+    0 3px 0 #c98f0e,
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.08s ease;
+}
+
+.btn-gold-3d:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 #c98f0e,
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+/* Verification success celebration */
+@keyframes pop-bounce {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-pop-bounce {
+  animation: pop-bounce 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes counter-pulse {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(206, 246, 70, 0.3);
+  }
+  50% {
+    transform: scale(1.09);
+    text-shadow:
+      0 0 25px rgba(206, 246, 70, 0.95),
+      0 0 45px rgba(76, 175, 80, 0.65);
+    color: #ffffff;
+  }
+  100% {
+    transform: scale(1);
+    text-shadow: 0 0 14px rgba(206, 246, 70, 0.4);
+  }
+}
+
+.animate-counter-finish {
+  animation: counter-pulse 0.7s ease-out forwards;
+}
+
+/* The new ledger row, arriving */
+@keyframes ledger-glow-in {
+  0% {
+    background-color: rgba(76, 175, 80, 0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+  }
+  50% {
+    background-color: rgba(76, 175, 80, 0.25);
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+  }
+  100% {
+    background-color: rgba(232, 245, 233, 0.6);
+    transform: translateY(0);
+    box-shadow: none;
+  }
+}
+
+.ledger-item-highlight {
+  animation: ledger-glow-in 2s ease-out forwards;
+}
+
+@keyframes ledger-slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.97);
+    max-height: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    max-height: 140px;
+  }
+}
+
+.animate-ledger-drop {
+  animation: ledger-slide-down 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes ledger-pulse-ring {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+  }
+}
+
+.animate-ledger-ring {
+  animation: ledger-pulse-ring 1.2s cubic-bezier(0.4, 0, 0.6, 1) 3;
+}

@@ -1,0 +1,246 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, qa, staging, main, "release/**", "hotfix/**"]
+  push:
+    branches: [develop, qa, staging, main, "release/**", "hotfix/**"]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "22.21.1"
+  PNPM_VERSION: "9.9.0"
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # apps/web (Next.js) — lint, typecheck, unit tests + coverage
+  # ---------------------------------------------------------------------------
+  web-checks:
+    name: web / lint, typecheck, test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history — SonarCloud needs this for new-code analysis
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm --filter web lint
+
+      - name: Typecheck
+        run: pnpm --filter web typecheck
+
+      - name: Unit tests + coverage
+        run: pnpm --filter web test:coverage
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-coverage
+          path: apps/web/coverage
+          retention-days: 7
+
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    needs: [web-checks]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history — required for SonarCloud new-code analysis
+
+      - name: Download coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: web-coverage
+          path: apps/web/coverage
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      # - name: SonarQube Quality Gate Check
+      #   uses: sonarsource/sonarqube-quality-gate-action@v1.1.0
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [web-checks]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm --filter web build
+        env:
+          # `next build` evaluates every page module to collect route config, and
+          # lib/config/{env,serverEnv}.ts both validate at module load - so all
+          # three variables must exist or the build dies with the unhelpful
+          # "Failed to collect page data for <some page>". The page it names
+          # varies between runs; the real reason is in the `[cause]` line.
+          #
+          # The build never connects to Supabase: every route is dynamic, so
+          # nothing is fetched at build time. These only need to be present, which
+          # is why each falls back to a placeholder when the secret is unset - a
+          # compile check should not require a live project. Real values come from
+          # the runtime environment (Vercel), and are used here when set.
+          #
+          # The service-role key has no fallback to a real secret on purpose:
+          # putting it in CI would expose it to every workflow run, including PR
+          # builds, for no benefit.
+          #
+          # If a statically generated page ever needs real Supabase data at build
+          # time, these are the lines that have to change.
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'build-time-placeholder-anon-key' }}
+          SUPABASE_SERVICE_ROLE_KEY: build-time-placeholder-not-a-real-key
+
+  # ---------------------------------------------------------------------------
+  # Deploy Preview — PRs into develop/qa/staging, and pushes to those branches
+  # ---------------------------------------------------------------------------
+  deploy-preview:
+    name: Deploy Preview (develop/qa/staging)
+    needs: [web-checks, build]
+    if: |
+      (github.event_name == 'pull_request' && contains(fromJSON('["develop","qa","staging"]'), github.base_ref)) ||
+      (github.event_name == 'push' && contains(fromJSON('["refs/heads/develop","refs/heads/qa","refs/heads/staging"]'), github.ref))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Override Git author metadata for Vercel
+        run: |
+          git config user.name "${{ secrets.VERCEL_ADMIN_NAME }}"
+          git config user.email "${{ secrets.VERCEL_ADMIN_EMAIL }}"
+          git commit --amend --reset-author --no-edit
+
+      - name: Pull Vercel environment information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build project artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy preview to Vercel
+        id: deploy
+        run: echo "url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})" >> "$GITHUB_OUTPUT"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Install Playwright browsers
+        run: pnpm --filter web exec playwright install --with-deps chromium
+
+      - name: Run E2E tests against preview
+        run: pnpm --filter web e2e
+        env:
+          E2E_BASE_URL: ${{ steps.deploy.outputs.url }}
+
+  # ---------------------------------------------------------------------------
+  # Deploy Production — pushes to main only
+  # ---------------------------------------------------------------------------
+  deploy-production:
+    name: Deploy Production (main)
+    needs: [web-checks, build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Override Git author metadata for Vercel
+        run: |
+          git config user.name "${{ secrets.VERCEL_ADMIN_NAME }}"
+          git config user.email "${{ secrets.VERCEL_ADMIN_EMAIL }}"
+          git commit --amend --reset-author --no-edit
+
+      - name: Pull Vercel environment information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build project artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy production to Vercel
+        id: deploy
+        run: echo "url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})" >> "$GITHUB_OUTPUT"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Install Playwright browsers
+        run: pnpm --filter web exec playwright install --with-deps chromium
+
+      - name: Run E2E tests against production
+        run: pnpm --filter web e2e
+        env:
+          E2E_BASE_URL: ${{ steps.deploy.outputs.url }}

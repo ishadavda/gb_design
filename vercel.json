@@ -1,0 +1,13 @@
+{
+  "services": {
+    "web": {
+      "root": "apps/web/"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": { "service": "web" }
+    }
+  ]
+}

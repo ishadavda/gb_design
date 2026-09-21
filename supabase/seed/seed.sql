@@ -1,0 +1,6 @@
+-- Local dev seed data. Run via `supabase db reset`, which applies every
+-- migration and then this file. Keep it free of anything resembling real
+-- customer or financial data.
+--
+-- Nothing to seed yet: accounts and consents are both written by the onboarding
+-- flow, so an empty database plus one signup is the realistic local state.
