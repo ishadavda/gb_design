@@ -36,7 +36,7 @@ export default async function HomePage({
   const { welcome } = await searchParams;
 
   return (
-    <div className="relative w-full flex-1 overflow-y-auto pb-24 no-scrollbar">
+    <div className="relative min-h-0 w-full flex-1 overflow-y-auto pb-24 no-scrollbar">
       {welcome === "1" && <WelcomeActions />}
       <BalanceCard progressPercent={progressPercent} />
 

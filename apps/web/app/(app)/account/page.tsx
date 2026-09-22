@@ -15,7 +15,7 @@ import { SecurityCard } from "./_components/SecurityCard";
  */
 export default function AccountPage() {
   return (
-    <div className="no-scrollbar relative w-full flex-1 overflow-y-auto pb-24">
+    <div className="no-scrollbar relative min-h-0 w-full flex-1 overflow-y-auto pb-24">
       <div className="sticky top-0 z-20 flex items-center justify-between border-b border-border-light bg-white/95 px-4 py-3 backdrop-blur-md">
         <div className="flex items-center gap-2">
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[#EAF8FF] text-[rgb(27_118_155_/_var(--tw-text-opacity,1))]">

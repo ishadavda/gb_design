@@ -27,7 +27,9 @@ export function Field({ label, hint, prefix, id, className = "", ...props }: Fie
           } ${className}`}
         />
         {prefix && (
-          <span className="absolute left-3.5 top-3.5 text-sm font-bold text-slate">{prefix}</span>
+          <span className="absolute inset-y-0 left-3.5 flex items-center text-sm font-bold text-slate">
+            {prefix}
+          </span>
         )}
       </div>
 

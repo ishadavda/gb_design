@@ -34,21 +34,21 @@ export function AccountFooter() {
           showToast("Logged out of Greenback Cash. Redirecting...", "info");
           timer.current = window.setTimeout(() => router.push("/onboarding"), 1200);
         }}
-        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-[#9ad8f3] bg-[#dff6ff] py-3 text-xs font-extrabold text-[#1b769b] transition hover:bg-[#d0f0ff] active:scale-[0.98]"
+        className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-3 text-xs font-extrabold text-navy shadow-[0_1px_0_rgba(15,23,42,0.02)] transition hover:bg-slate-50 active:scale-[0.98]"
       >
-        <Icon name="log-out" className="h-4 w-4" />
+        <Icon name="log-out" className="h-4 w-4 text-navy" />
         <span>Log Out of Greenback Cash</span>
       </button>
 
       <button
         type="button"
         onClick={() => setDeleteOpen(true)}
-        className="my-2 mx-auto block cursor-pointer text-center text-xs font-bold tracking-tight text-[rgb(27_118_155_/_var(--tw-text-opacity,1))] hover:underline"
+        className="my-2 mx-auto block cursor-pointer text-center text-xs font-bold tracking-tight text-navy transition hover:underline"
       >
         Delete Account
       </button>
 
-      <p className="mt-2.5 text-center text-[10px] font-medium uppercase tracking-[0.14em] text-slate-500">
+      <p className="mt-2.5 text-center text-[10px] font-medium uppercase tracking-[0.15em] text-slate-500">
         App Version 2.4.0 (2026) • CPG Clearinghouse Network
       </p>
 

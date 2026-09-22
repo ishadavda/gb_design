@@ -24,7 +24,7 @@ export default async function DealsPage({
     if (!dispensary) notFound();
 
     return (
-      <div className="relative w-full flex-1 overflow-y-auto pb-24 no-scrollbar">
+      <div className="relative min-h-0 w-full flex-1 overflow-y-auto pb-24 no-scrollbar">
         <BrandOffers
           name={dispensary.name}
           brand={dispensary.brand}
@@ -36,7 +36,7 @@ export default async function DealsPage({
   }
 
   return (
-    <div className="relative w-full flex-1 overflow-y-auto pb-24 no-scrollbar">
+    <div className="relative min-h-0 w-full flex-1 overflow-y-auto pb-24 no-scrollbar">
       <BrandDirectory
         brands={DISPENSARY_DIRECTORY.map((dispensary) => ({
           id: dispensary.id,

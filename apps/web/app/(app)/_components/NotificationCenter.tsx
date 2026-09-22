@@ -126,7 +126,7 @@ export function NotificationCenter() {
                   className={`flex items-start gap-3 rounded-xl border p-3 transition ${
                     notification.read
                       ? "border-border-light/80 bg-white opacity-75"
-                      : "border-cta-green bg-white"
+                      : "border-2 border-emerald-500 bg-white shadow-sm"
                   }`}
                 >
                   <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${notification.tone}`}>
@@ -136,10 +136,10 @@ export function NotificationCenter() {
                   <button
                     type="button"
                     onClick={() => toggleRead(notification.id)}
-                    className="min-w-0 flex-1 text-left"
+                    className="min-w-0 flex-1 text-left text-navy hover:text-cta-green"
                   >
                     <div className="flex items-center gap-1.5">
-                      <h4 className="flex min-w-0 items-center gap-1.5 truncate text-xs font-extrabold">
+                      <h4 className="flex min-w-0 items-center gap-1.5 truncate text-xs font-extrabold text-navy transition hover:text-cta-green">
                         {!notification.read && <span className="h-2 w-2 shrink-0 rounded-full bg-alert-red" />}
                         {notification.title}
                       </h4>
@@ -157,7 +157,7 @@ export function NotificationCenter() {
                       type="button"
                       onClick={() => toggleRead(notification.id)}
                       aria-label={notification.read ? "Mark unread" : "Mark read"}
-                      className="rounded-lg border border-cta-green/30 bg-white p-1.5 text-cta-green"
+                      className="rounded-lg border border-claire/30 bg-white p-1.5 text-claire"
                     >
                       <Icon name={notification.read ? "rotate-ccw" : "check"} className="h-3.5 w-3.5" />
                     </button>

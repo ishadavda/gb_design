@@ -56,10 +56,10 @@ export function PreferencesCard() {
           <Icon name="bell" className="h-4 w-4" />
         </span>
         <div>
-          <h4 className="text-xs font-extrabold text-navy">
+          <h4 className="text-sm font-extrabold text-navy">
             Notification &amp; Privacy Preferences
           </h4>
-          <p className="text-[10px] font-medium text-slate">Double opt-in permissions</p>
+          <p className="text-xs font-medium text-slate">Double opt-in permissions</p>
         </div>
       </div>
 
@@ -68,12 +68,12 @@ export function PreferencesCard() {
           <label
             key={preference.id}
             className={`flex cursor-pointer items-start justify-between gap-3 ${
-              index === 0 ? "" : "border-t border-border-light/60 pt-2"
+              index === 0 ? "" : "border-t border-border-light/60 pt-2.5"
             }`}
           >
             <div className="flex-1">
-              <span className="block text-xs font-bold text-navy">{preference.title}</span>
-              <span className="mt-0.5 block text-[10px] leading-tight text-slate">
+              <span className="block text-sm font-bold text-navy">{preference.title}</span>
+              <span className="mt-1 block text-xs leading-relaxed text-slate">
                 {preference.description}
               </span>
             </div>
@@ -84,7 +84,7 @@ export function PreferencesCard() {
               onClick={() => togglePreference(preference.id, preference.toast)}
               className={`mt-0.5 flex h-5 w-5 items-center justify-center rounded-md border transition ${
                 preferences[preference.id]
-                  ? "border-[#9AE6B4] bg-[#EAF9EF] text-[#1A8F50]"
+                  ? "border-[#2E7D32] bg-[#2E7D32] text-white"
                   : "border-slate-500 bg-white text-transparent"
               }`}
             >
@@ -97,9 +97,9 @@ export function PreferencesCard() {
       <button
         type="button"
         onClick={() => setSheetOpen(true)}
-        className="mt-3 flex w-full cursor-pointer items-center justify-center gap-1.5 border-t border-border-light pt-2.5 text-xs font-extrabold text-[#00A8D6] transition hover:text-[#0088AF]"
+        className="group mt-3 flex w-full cursor-pointer items-center justify-center gap-1.5 border-t border-border-light pt-3 text-sm font-extrabold text-[#00A8D6] transition hover:text-black"
       >
-        <Icon name="bell" className="h-4 w-4" />
+        <Icon name="bell" className="h-4 w-4 transition group-hover:text-black" />
         Preview Notification &amp; Opt-Out Prompt
       </button>
 

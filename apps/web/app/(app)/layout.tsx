@@ -44,7 +44,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             zip: DEMO_PROFILE.zip,
           }}
         >
-          <main className="mobile-frame relative flex min-h-screen w-full flex-col overflow-hidden bg-slate-page md:h-[900px] md:max-h-[900px] md:min-h-[900px]">
+          <main className="mobile-frame relative flex h-screen min-h-0 w-full flex-col overflow-hidden bg-slate-page md:h-[900px] md:max-h-[900px] md:min-h-[900px]">
             <ReceiptScannerProvider>
               <header className="relative z-20 flex w-full shrink-0 items-center justify-between border-b border-border-light bg-white px-4 py-2">
                 <div className="w-8" />

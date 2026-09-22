@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/shared/ui/Button";
 import { Icon, type IconName } from "@/shared/ui/Icon";
 import { Wordmark } from "@/shared/ui/Wordmark";
@@ -78,6 +79,15 @@ export function SplashScreen({ onStart }: { onStart: () => void }) {
             Get Started
           </Button>
         </div>
+        <p className="mt-3 text-center text-xs font-semibold text-slate">
+          Already have an account?
+          <Link
+            href="/login"
+            className="ml-1 font-extrabold text-teal underline transition hover:text-navy"
+          >
+            Log In
+          </Link>
+        </p>
         <p className="mt-3 text-center text-[10px] font-medium uppercase tracking-wider text-slate">
           21+ Only • Compliant CPG Rebate Clearinghouse
         </p>

@@ -232,7 +232,7 @@ function Checkbox({ checked }: { checked: boolean }) {
   return (
     <span
       className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border ${
-        checked ? "border-[#00B4D8] bg-[#00B4D8] text-navy" : "border-slate-300 bg-white text-transparent"
+        checked ? "border-[#2E7D32] bg-[#2E7D32] text-white" : "border-slate-300 bg-white text-transparent"
       }`}
     >
       <Icon name="check" className="h-3 w-3" />

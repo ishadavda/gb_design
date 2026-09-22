@@ -15,22 +15,22 @@ export function PersonalDetailsCard() {
     <div className="mx-3.5 mt-3 rounded-2xl border border-border-light bg-white p-4">
       <div className="flex items-center justify-between border-b border-border-light pb-2.5">
         <div className="flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-border-light bg-slate-page text-claire">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-light bg-slate-page text-claire">
             <Icon name="user-check" className="h-4 w-4" />
           </span>
-          <h4 className="text-xs font-extrabold text-navy">Personal Details</h4>
+          <h4 className="text-sm font-extrabold text-navy">Personal Details</h4>
         </div>
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="flex cursor-pointer items-center gap-1 text-[11px] font-bold text-teal hover:underline"
+          className="flex cursor-pointer items-center gap-1 text-sm font-bold text-teal hover:underline"
         >
-          <Icon name="edit-3" className="h-3 w-3" />
+          <Icon name="edit-3" className="h-3.5 w-3.5" />
           <span>Edit Details</span>
         </button>
       </div>
 
-      <div className="mt-3 space-y-2.5 text-xs">
+      <div className="mt-3 space-y-3 text-sm">
         <DetailRow label="First Name" value={profile.firstName} />
         <DetailRow label="Last Name" value={profile.lastName} />
 
@@ -94,9 +94,9 @@ function DetailRow({
 }) {
   return (
     <div
-      className={`flex items-center justify-between py-1 ${last ? "" : "border-b border-border-light/60"}`}
+      className={`flex items-center justify-between py-1.5 ${last ? "" : "border-b border-border-light/60"}`}
     >
-      <span className="text-[11px] font-medium text-slate">{label}</span>
+      <span className="text-sm font-medium text-slate">{label}</span>
       {badge ? (
         <div className="flex items-center gap-1.5">
           <span className="font-bold text-navy">{value}</span>

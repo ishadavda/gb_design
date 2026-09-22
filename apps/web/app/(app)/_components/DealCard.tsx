@@ -88,8 +88,8 @@ export function DealCard(deal: DealCardProps) {
 
         <div className="min-w-0 flex-1">
           <h4 className="truncate text-[15px] font-extrabold tracking-[-0.03em] text-[#101826]">{deal.title}</h4>
-          <div className="mt-2 flex items-center justify-between gap-2">
-            <span className="rounded-lg border-[2px] border-[#ff7b7b] bg-[#fff2f2] px-2 py-1 text-[15px] font-extrabold text-[#d93030]">
+          <div className="mt-2 flex min-w-0 items-center gap-2">
+            <span className="inline-flex h-8 min-w-0 flex-1 items-center justify-center rounded-lg border-[2px] border-[rgb(220_38_38_/_var(--tw-text-opacity,1))] bg-white px-2 text-center text-[15px] font-extrabold text-[rgb(220_38_38_/_var(--tw-text-opacity,1))] md:flex-none">
               {deal.rebateLabel}
             </span>
             <button
@@ -102,9 +102,9 @@ export function DealCard(deal: DealCardProps) {
                   storeName: deal.dispensary,
                 });
               }}
-              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-[#0f1d3c] px-2.5 py-2 text-white shadow-sm transition hover:bg-[#16274f] active:scale-95 active:shadow-none"
+              className="inline-flex h-8 min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-[#0f1d3c] px-2.5 text-white shadow-sm transition hover:bg-[#16274f] active:scale-95 active:shadow-none md:flex-none"
             >
-              <Icon name="scan-line" className="h-4 w-4 shrink-0" />
+              <Icon name="scan-line" className="h-4 w-4 shrink-0 text-[#9fe7c4]" />
               <span className="text-right text-[11px] font-black leading-tight">Scan Now</span>
             </button>
           </div>

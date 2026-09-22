@@ -196,7 +196,7 @@ function LedgerRow({
       <div className="flex flex-col gap-1.5 py-2.5">
         <div className="flex items-center justify-between gap-2.5">
           <div className="flex min-w-0 items-center gap-2.5">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-alert-red/20 bg-alert-red/10 text-alert-red">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border-2 border-alert-red bg-white text-alert-red">
               <Icon name={entry.icon} className="h-4 w-4" />
             </span>
             <div className="min-w-0">
@@ -210,7 +210,7 @@ function LedgerRow({
                     Dispute
                   </span>
                 ) : (
-                  <span className="rounded border border-alert-red/30 bg-alert-red/10 px-1.5 py-[0.05rem] text-[8.5px] font-extrabold text-alert-red">
+                  <span className="rounded border-2 border-alert-red/50 bg-white px-1.5 py-[0.05rem] text-[8.5px] font-extrabold text-alert-red">
                     {entry.tag}
                   </span>
                 )}
@@ -235,7 +235,7 @@ function LedgerRow({
         </div>
 
         {entry.rejection && (
-          <div className="ml-10 flex items-center justify-between gap-2 rounded-lg border border-alert-red/20 bg-alert-red/5 p-2 text-[10px] text-slate-600">
+          <div className="ml-10 flex items-center justify-between gap-2 rounded-xl border-2 border-alert-red/50 bg-white p-2.5 text-[10px] text-slate-600 shadow-2xs">
             <div className="flex min-w-0 items-start gap-1.5">
               <Icon
                 name={entry.rejection.icon}
@@ -255,7 +255,7 @@ function LedgerRow({
                 <button
                   type="button"
                   onClick={onChallenge}
-                  className="flex cursor-pointer items-center gap-1 rounded-md border border-alert-red/30 bg-white px-2 py-1 text-[9.5px] font-extrabold text-alert-red transition hover:bg-alert-red/10 active:scale-95"
+                  className="flex cursor-pointer items-center gap-1 rounded-md border-2 border-alert-red/50 bg-white px-2.5 py-1 text-[9.5px] font-extrabold text-navy transition hover:bg-red-50 active:scale-95 shadow-2xs"
                 >
                   <Icon name="scale" className="h-3 w-3" />
                   <span>Challenge</span>

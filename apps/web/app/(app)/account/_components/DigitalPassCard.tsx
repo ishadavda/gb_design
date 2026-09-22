@@ -35,15 +35,15 @@ export function DigitalPassCard() {
     <div className="mx-3.5 mt-3 rounded-[20px] border border-border-light bg-white p-4 shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
       <div className="flex items-center justify-between border-b border-border-light pb-2.5">
         <div className="flex items-center gap-2.5">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-border-light bg-slate-page text-[#1D7EE8]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-light bg-slate-page text-[#1D7EE8]">
             <Icon name="wallet" className="h-4 w-4" />
           </span>
           <div>
-            <h4 className="text-xs font-extrabold text-navy">Digital Loyalty Pass</h4>
-            <p className="text-[10px] font-medium text-slate">Synced with Apple Wallet</p>
+            <h4 className="text-sm font-extrabold text-navy">Digital Loyalty Pass</h4>
+            <p className="text-xs font-medium text-slate">Synced with Apple Wallet</p>
           </div>
         </div>
-        <span className="rounded-md border border-[#B7F0C1] bg-[#E8F8EC] px-2 py-0.5 text-[9.5px] font-extrabold uppercase text-[#1a8f50]">
+        <span className="rounded-md border border-[#B7F0C1] bg-[#E8F8EC] px-2.5 py-1 text-[10px] font-extrabold uppercase text-[#1a8f50]">
           Provisioned
         </span>
       </div>
@@ -54,7 +54,7 @@ export function DigitalPassCard() {
             <span key={index} className={`${width} h-full rounded-sm bg-black`} />
           ))}
         </div>
-        <div className="mt-2 flex w-full items-center justify-between font-mono text-[10px] font-bold text-slate">
+        <div className="mt-2 flex w-full items-center justify-between font-mono text-xs font-bold text-slate">
           <span>ID: {DEMO_PROFILE.passId}</span>
           <span className="font-sans font-extrabold uppercase text-[#1D7EE8]">Linked</span>
         </div>
@@ -63,7 +63,7 @@ export function DigitalPassCard() {
       <button
         type="button"
         onClick={() => showToast("Opening Apple Wallet digital pass...", "info")}
-        className="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#101626] py-2.5 text-xs font-extrabold text-white transition hover:bg-[#1b2541]"
+        className="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#101626] py-2.5 text-sm font-extrabold text-white transition hover:bg-[#1b2541]"
       >
         <Icon name="smartphone" className="h-4 w-4" />
         <span>View Pass in Apple Wallet</span>

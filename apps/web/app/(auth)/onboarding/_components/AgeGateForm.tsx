@@ -98,9 +98,9 @@ function DateInputMask({ value }: { value: string }) {
   return (
     <div className="pointer-events-none absolute inset-0 z-20 flex items-center px-4 pr-11 text-sm font-semibold">
       {placeholders.map((placeholder, index) => (
-        <span key={placeholder} className={segments[index] ? "text-navy" : "text-slate/60"}>
+        <span key={placeholder} className={segments[index] ? "text-navy" : "text-slate"}>
           {segments[index] || placeholder}
-          {index < separators.length && <span className="text-slate/60">{separators[index]}</span>}
+          {index < separators.length && <span className="text-slate">{separators[index]}</span>}
         </span>
       ))}
     </div>

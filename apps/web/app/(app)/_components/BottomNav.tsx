@@ -40,7 +40,7 @@ export function BottomNav() {
         className="flex flex-1 cursor-pointer flex-col items-center gap-0.5 text-[9px] font-bold text-slate transition hover:text-navy"
       >
         <span className="flex h-7 w-9 items-center justify-center rounded-lg">
-          <Icon name="scan-line" className="h-4 w-4 text-slate" />
+          <Icon name="scan-line" className="h-5 w-5 text-slate" />
         </span>
         <span>Scan</span>
       </button>
@@ -74,7 +74,7 @@ function Tab({
       <span
         className={`flex h-7 w-9 items-center justify-center rounded-lg ${active ? "bg-teal-tint" : ""}`}
       >
-        <Icon name={icon} className={`h-4 w-4 ${active ? "text-teal" : "text-slate"}`} />
+        <Icon name={icon} className={`h-5 w-5 ${active ? "text-teal" : "text-slate"}`} />
       </span>
       <span>{label}</span>
     </Link>
